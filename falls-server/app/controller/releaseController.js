@@ -12,7 +12,11 @@ class ReleaseController extends Controller {
 
   async findRelease(ctx) {
     const token = ctx.request.headers['x-token']
-    ctx.body = await ctx.service.releaseService.find(token)
+    ctx.body = await ctx.service.releaseService.find(ctx.query.userId, token)
+  }
+
+  async findAllRelease(ctx) {
+    ctx.body = await this.ctx.service.releaseService.findAll()
   }
 
   async getReleaseDetail(ctx) {

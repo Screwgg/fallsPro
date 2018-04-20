@@ -3,7 +3,7 @@
     <div class="left">
       <img src="@/assets/logo.png" class="logo">
       <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :router="true">
-        <el-menu-item index="/discover">发现</el-menu-item>
+        <el-menu-item index="/">发现</el-menu-item>
         <el-menu-item index="/magazine">周刊</el-menu-item>
         <el-menu-item index="/qa">问答</el-menu-item>
         <el-menu-item index="/collect">摄影图库</el-menu-item>
@@ -54,6 +54,13 @@
         @close="clearSignup"
         center>
         <el-form :model="signup" :rules="signupRules" status-icon label-width="120" ref="signup">
+          <el-form-item label="我是" prop="usertype">
+            <el-radio-group v-model="signup.usertype" size="medium">
+              <el-radio-button :label="0">设计师</el-radio-button>
+              <el-radio-button :label="1">普通用户</el-radio-button>
+              <el-radio-button :label="2">企业用户</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="用户名" prop="username">
             <el-input v-model="signup.username"></el-input>
           </el-form-item>
@@ -65,6 +72,9 @@
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="signup.email"></el-input>
+          </el-form-item>
+          <el-form-item label="公司" prop="company">
+            <el-input v-model="signup.company"></el-input>
           </el-form-item>
           <el-form-item label="职位" prop="job">
             <el-input v-model="signup.job"></el-input>
@@ -160,13 +170,18 @@ export default {
       signupDialog: false,
       signinDialog: false,
       signup: {
+        usertype: '',
         username: '',
         password: '',
         checkPassword: '',
         email: '',
+        company: '',
         job: ''
       },
       signupRules: {
+        usertype: [
+          { required: true, message: '请选择身份', trigger: 'blur' }
+        ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 4, max: 8, message: '长度在 4 到 8 个字符', trigger: 'blur' },
@@ -185,6 +200,9 @@ export default {
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
+        ],
+        company: [
+          { required: true, message: '请输入公司', trigger: 'blur' }
         ],
         job: ''
       },
@@ -210,7 +228,11 @@ export default {
   },
   methods: {
     showRelease () {
-      this.$router.push('/release')
+      if (!Cookie.get('token')) {
+        this.$router.push('/blank')
+      } else {
+        this.$router.push('/release')
+      }
     },
     getCookie () {
       const token = Cookie.get('token')
@@ -228,10 +250,7 @@ export default {
             if (response.data.status === 'error') {
               throw response
             }
-            this.$message({
-              message: response.data.message,
-              type: response.data.status
-            })
+            this.$message.success(response.data.message)
           } catch (e) {
             this.$message.error(e.data.message)
           }
@@ -254,11 +273,13 @@ export default {
         }
         Cookie.set('token', response.data.data.token, { expires: 3 })
         this.getCookie()
-        this.$message({
-          message: response.data.message,
-          type: response.data.status
-        })
+        this.$message.success(response.data.message)
         this.isLogin = true
+        if (this.$route.path === '/blank') {
+          this.$router.push('/')
+        } else {
+          this.$router.go(0)
+        }
       } catch (e) {
         this.$message.error(e.data.message)
       }
@@ -274,7 +295,10 @@ export default {
       try {
         switch (command) {
           case 'daily':
-            this.$router.push('/daily')
+            this.$router.push('/homepage/daily')
+            break
+          case 'setting':
+            this.$router.push('/homepage/setting')
             break
           case 'logout':
             this.$confirm('确认退出登录？', '提示', {
@@ -294,6 +318,10 @@ export default {
               Cookie.remove('token')
               this.$axios.defaults.headers.common['X-TOKEN'] = ''
               this.$message.success(response.data.message)
+              this.$router.go(0)
+              if (this.$route.path.indexOf('/homepage') !== -1) {
+                this.$router.push('/blank')
+              }
             }).catch((e) => {
               this.$message.error(e.data.message)
             })

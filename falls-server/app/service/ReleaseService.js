@@ -38,15 +38,34 @@ module.exports = app => {
       var uploadToken = putPolicy.uploadToken(mac)
       return uploadToken
     }
-    async find(token) {
+    async find(userId, token) {
       try {
-        const session = await app.model.UserLogin.findOne({ session: token, valid: true })
-        if (!session) {
-          throw new Error('请重新登录')
+        if (!userId && token) {
+          const session = await app.model.UserLogin.findOne({ session: token, valid: true })
+          if (!session) {
+            throw new Error('请重新登录')
+          }
+          userId = session.userId
         }
-        const releaseList = await app.model.Release.find({userId: session.userId})
+        const releaseList = await app.model.Release.find({userId: userId})
         return {
           data: releaseList,
+          status: 'success',
+          message: ''
+        }
+      } catch (e) {
+        return {
+          data: null,
+          status: 'error',
+          message: e.message
+        }
+      }
+    }
+    async findAll() {
+      try {
+        const allReleaseList = await app.model.Release.find()
+        return {
+          data: allReleaseList,
           status: 'success',
           message: ''
         }

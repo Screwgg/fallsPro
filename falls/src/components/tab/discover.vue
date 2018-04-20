@@ -1,8 +1,8 @@
 <template>
   <div class="discover">
     <div class="banner">
-        Showcase &amp; Discover<br>
-        Creative Work
+      Showcase &amp; Discover<br>
+      Creative Work
     </div>
 
     <waterfall
@@ -16,7 +16,7 @@
         :order="index"
         :key="index"
         move-class="item-move">
-          <div class="card">
+          <div class="card" @click="enterDetail(item._id)">
             <img :src="item.avatar" class="image">
             <div class="title">
               {{item.title}}
@@ -44,7 +44,7 @@ export default {
   methods: {
     async getReleaseList () {
       try {
-        let response = await this.$axios.post('http://localhost:7001/findrelease')
+        let response = await this.$axios.get('http://localhost:7001/findallrelease')
         response.data.data.forEach(item => {
           const res = new Promise((resolve, reject) => { // The Image.prototype.onload property is not a promise. If you're wanting to return the height property after loading, you would instead create a Promise...
             let image = new Image()
@@ -60,6 +60,9 @@ export default {
       } catch (e) {
         this.$message.error(e.data.message)
       }
+    },
+    enterDetail (releaseId) {
+      this.$router.push({ path: '/detail', query: { _id: releaseId } })
     }
   }
 }

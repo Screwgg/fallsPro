@@ -231,7 +231,7 @@ export default {
       Object.keys(this.release).forEach(item => {
         this.release[item] = ''
       })
-      this.$router.push('/daily')
+      this.$router.push('/homepage/daily')
     },
     cancelShot () {
       this.$router.go(-1)
@@ -246,6 +246,7 @@ export default {
 
     .headline
       font-size: 24px
+      font-weight: 700
 
     .release
       width: 30%
@@ -261,6 +262,7 @@ export default {
 <style lang="sass">
   .el-form-item__label
     margin-right: 30px
+    font-weight: 600
 
   .ql-container
     height: 400px

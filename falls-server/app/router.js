@@ -9,7 +9,8 @@ module.exports = app => {
 
   router.post('/createrelease', controller.releaseController.createRelease)
   router.post('/gettoken', controller.releaseController.getToken)
-  router.post('/findrelease', controller.releaseController.findRelease)
+  router.get('/findrelease', controller.releaseController.findRelease)
+  router.get('/findallrelease', controller.releaseController.findAllRelease)
   router.get('/getreleasedetail', controller.releaseController.getReleaseDetail)
   router.post('/deleterelease', controller.releaseController.deleteRelease)
 } 

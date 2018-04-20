@@ -6,7 +6,9 @@ module.exports = app => {
   const UserSchema = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    email: { type: String, unique: true },
+    usertype: { type: Number, required: true },
+    email: { type: String, required: true, unique: true },
+    company: { type: String, required: true },
     job: { type: String },
   }, {
     timestamps: true,

@@ -19,11 +19,13 @@ class UserController extends Controller {
   }
 
   async updateUser(ctx) {
-    ctx.body = await ctx.service.userService.update({ _id: ctx.query._id })
+    const token = ctx.request.headers['x-token']
+    ctx.body = await ctx.service.userService.update(ctx.request.body, token)
   }
 
   async getUserInfo(ctx) {
-    ctx.body = await ctx.service.userService.getInfo(ctx.query.userId)
+    const token = ctx.request.headers['x-token']
+    ctx.body = await ctx.service.userService.getInfo(ctx.query.userId, token)
   }
 }
 

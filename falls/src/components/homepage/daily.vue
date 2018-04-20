@@ -1,9 +1,5 @@
 <template>
   <div class="daily">
-    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">我的主页</el-breadcrumb-item>
-      <el-breadcrumb-item>我的发布</el-breadcrumb-item>
-    </el-breadcrumb>
     <ul>
       <li v-for="item in dailyList" :key="item._Id" class="dailylist">
         <div class="left" @click="jumpDetail(item._id)">
@@ -22,7 +18,7 @@
           </div>
         </div>
         <div class="right">
-          <i class="el-icon-delete" @click="deleteRelease(item._id)"></i>
+          <i class="el-icon-delete" @click="deleteRelease(item._id)" v-show="isAuthor"></i>
         </div>
       </li>
     </ul>
@@ -40,10 +36,24 @@ export default {
   mounted () {
     this.getDailyList()
   },
+  computed: {
+    isAuthor () {
+      if (this.$route.path === '/homepage/daily') {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
   methods: {
     async getDailyList () {
       try {
-        let response = await this.$axios.post('http://localhost:7001/findrelease')
+        let response
+        if (this.$route.query.userId) {
+          response = await this.$axios.get('http://localhost:7001/findrelease?userId=' + this.$route.query.userId)
+        } else {
+          response = await this.$axios.get('http://localhost:7001/findrelease')
+        }
         this.dailyList = response.data.data
       } catch (e) {
         this.$message.error(e.data.message)
@@ -77,10 +87,6 @@ export default {
   .daily
     margin: 0 20px
 
-    .breadcrumb
-      margin: 10px 0 20px
-      font-size: 14px
-
     ul
       padding: 0
       list-style: none
@@ -90,8 +96,12 @@ export default {
         margin: 24px 0
         justify-content: space-between
 
+        &:hover
+          border-right: #bb0f24 6px solid
+
         .left
           display: flex
+          cursor: pointer
 
           .thumbnail
             width: 400px

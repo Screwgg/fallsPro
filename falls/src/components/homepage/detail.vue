@@ -3,7 +3,7 @@
     <div class="mainbody">
       <div class="detail-title">{{detail.title}}</div>
       <div class="line"></div>
-      <div class="detail-info">{{detail.type}} | {{author}} | {{detail.createdAt}}</div>
+      <div class="detail-info">{{detail.type}} | <span @click="jumpUserinfo" class="author">{{author}}</span> | {{detail.createdAt}}</div>
       <div v-html="detail.content" class="detail-content"></div>
     </div>
   </div>
@@ -52,6 +52,9 @@ export default {
       } catch (e) {
         this.$message.error(e.data.message)
       }
+    },
+    jumpUserinfo () {
+      this.$router.push('/homepage?userId=' + this.detail.userId)
     }
   }
 }
@@ -74,6 +77,9 @@ export default {
 
       .detail-info
         line-height: 40px
+
+        .author
+          cursor: pointer
 
       .detail-content
         /deep/ img

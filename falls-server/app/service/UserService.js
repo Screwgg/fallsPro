@@ -74,14 +74,39 @@ module.exports = app => {
         }
       } catch (e) {
         return {
-          data: null,
           status: 'error',
           message: '注册失败'
         }
       }
     }
-    async update (params) {
-      return params
+    async update (params, token) {
+      try {
+        const session = await app.model.UserLogin.findOne({ session: token, valid: true })
+        if (!session) {
+          throw new Error('请重新登录')
+        }
+        const userInfo = await app.model.User.findOne({ _id: session.userId })
+        if (userInfo) {
+          userInfo.company = params.company
+          userInfo.job = params.job
+          if (params.password) {
+            userInfo.password = params.password
+          }
+          await userInfo.save()
+          return {
+            data: userInfo,
+            status: 'success',
+            message: '修改成功'
+          }
+        } else {
+          throw new Error('账号未注册')
+        }
+      } catch (e) {
+        return {
+          status: 'error',
+          message: e.message
+        }
+      }
     }
     async logout (token) {
       try {
@@ -105,9 +130,16 @@ module.exports = app => {
         }
       }
     }
-    async getInfo (userId) {
+    async getInfo (userId, token) {
       try {
-        const userInfo = await app.model.User.findOne({_id: userId})
+        if (!userId && token) {
+          const session = await app.model.UserLogin.findOne({ session: token, valid: true })
+          if (!session) {
+            throw new Error('请重新登录')
+          }
+          userId = session.userId
+        }
+        const userInfo = await app.model.User.findOne({ _id: userId })
         if (!userInfo) {
           throw new Error('账号未注册')
         }

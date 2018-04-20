@@ -7,8 +7,12 @@ import magazine from '@/components/tab/magazine'
 import qa from '@/components/tab/qa'
 import collect from '@/components/tab/collect'
 import individual from '@/components/tab/individual'
-import daily from '@/components/daily'
-import detail from '@/components/detail'
+import blank from '@/components/tab/blank'
+import homepage from '@/components/homepage/homepage'
+import userinfo from '@/components/homepage/userinfo'
+import daily from '@/components/homepage/daily'
+import detail from '@/components/homepage/detail'
+import setting from '@/components/homepage/setting'
 
 Vue.use(Router)
 
@@ -16,11 +20,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
       component: index,
       children: [
         {
-          path: '/discover',
+          path: '',
           name: 'discover',
           component: discover
         },
@@ -45,11 +48,6 @@ export default new Router({
           component: collect
         },
         {
-          path: '/daily',
-          name: 'daily',
-          component: daily
-        },
-        {
           path: '/detail',
           name: 'detail',
           component: detail
@@ -58,6 +56,32 @@ export default new Router({
           path: '/individual',
           name: 'individual',
           component: individual
+        },
+        {
+          path: '/blank',
+          name: 'blank',
+          component: blank
+        },
+        {
+          path: '/homepage',
+          component: homepage,
+          children: [
+            {
+              path: '',
+              name: 'userinfo',
+              component: userinfo
+            },
+            {
+              path: 'daily',
+              name: 'daily',
+              component: daily
+            },
+            {
+              path: 'setting',
+              name: 'setting',
+              component: setting
+            }
+          ]
         }
       ]
     }
