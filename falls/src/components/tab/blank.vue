@@ -1,7 +1,7 @@
 <template>
   <div class="blank">
     <img src="@/assets/empty.png">
-    <span>未登录</span>
+    <span>立即登录与世界分享你刚画的飞机稿(๑˙ー˙๑)</span>
   </div>
 </template>
 
@@ -24,6 +24,6 @@ export default {
       display: inline-block
 
     span
+      padding: 8px
       color: #606266
-      font-weight: 600
 </style>

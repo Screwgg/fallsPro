@@ -39,7 +39,6 @@
             <el-dropdown-item command="qa">我的问答</el-dropdown-item>
             <el-dropdown-item command="photo">我的照片</el-dropdown-item>
             <el-dropdown-item command="individual">我的私单</el-dropdown-item>
-            <el-dropdown-item command="message">消息</el-dropdown-item>
             <el-dropdown-item command="setting">设置</el-dropdown-item>
             <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>

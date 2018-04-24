@@ -13,4 +13,7 @@ module.exports = app => {
   router.get('/findallrelease', controller.releaseController.findAllRelease)
   router.get('/getreleasedetail', controller.releaseController.getReleaseDetail)
   router.post('/deleterelease', controller.releaseController.deleteRelease)
+
+  router.post('/createcomment', controller.commentController.createComment)
+  router.get('/findcomment', controller.commentController.findComment)
 } 
