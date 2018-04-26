@@ -79,7 +79,7 @@ module.exports = app => {
     }
     async getDetail (releaseId) {
       try {
-        const releaseDetail = await app.model.Release.findOne({ _id: releaseId})
+        const releaseDetail = await app.model.Release.findOne({ _id: releaseId}).populate('userId', 'username')
         if (!releaseDetail) {
           throw new Error('该发布不存在或已删除')
         }

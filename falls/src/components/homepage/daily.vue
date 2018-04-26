@@ -13,7 +13,7 @@
             </div>
             <div class="comment">
               <i class="el-icon-message"></i>
-              <span class="comment-count">35</span>
+              <span class="comment-count">查看评论</span>
             </div>
           </div>
         </div>

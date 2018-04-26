@@ -7,9 +7,9 @@ module.exports = app => {
     title: { type: String, required: true },
     type: { type: String, required: true },
     avatar: { type: String, required: true },
-    content: { type: String, required: true },
+    content: { type: String, required: true }
   }, {
-    timestamps: true,
+    timestamps: true
   })
 
   return mongoose.model('Release', ReleaseSchema)

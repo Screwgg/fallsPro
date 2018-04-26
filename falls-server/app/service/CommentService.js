@@ -10,16 +10,24 @@ module.exports = app => {
           userId: session.userId,
           ...params
         }
-        const comment = new app.model.Comment(commentModel)
-        await comment.save()
+        await app.model.Comment.create(commentModel)
+
+        // 热门榜单中记录发布的评论数和打赏金额
+        const hotlist = await app.model.Hotlist.findOne({ releaseId: params.releaseId })
+        if (hotlist) {
+          hotlist.commentCount += 1
+          hotlist.rewardSum += params.reward
+          await hotlist.save()
+        } else {
+          await app.model.Hotlist.create({ releaseId: params.releaseId, commentCount: 1, rewardSum: params.reward })
+        }
+
         return {
-          data: comment,
           status: 'success',
           message: '发布成功'
         }
       } catch (e) {
         return {
-          data: null,
           status: 'error',
           message: e.message
         }
@@ -27,7 +35,7 @@ module.exports = app => {
     }
     async find (releaseId) {
       try {
-        const comment = await app.model.Comment.find({ releaseId: releaseId }).populate('userId', 'username usertype _id')
+        const comment = await app.model.Comment.find({ releaseId: releaseId }).populate('userId', 'username usertype').sort({ reward: -1 })
         return {
           data: comment,
           status: 'success',

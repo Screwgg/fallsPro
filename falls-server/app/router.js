@@ -16,4 +16,7 @@ module.exports = app => {
 
   router.post('/createcomment', controller.commentController.createComment)
   router.get('/findcomment', controller.commentController.findComment)
+
+  router.get('/findmagazine', controller.magazineController.findMagazine)
+  router.post('/createmagazine', controller.magazineController.createMagazine)
 } 

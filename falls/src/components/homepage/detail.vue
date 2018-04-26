@@ -3,7 +3,7 @@
     <div class="mainbody">
       <div class="detail-title">{{detail.title}}</div>
       <div class="line"></div>
-      <div class="detail-info">{{detail.type}} | <span @click="jumpUserinfo(detail.userId)" class="author">{{author}}</span> | {{detail.createdAt}}</div>
+      <div class="detail-info">{{detail.type}} | <span @click="jumpUserinfo(detail.userId._id)" class="author">{{detail.userId.username}}</span> | {{detail.createdAt}}</div>
       <div v-html="detail.content" class="detail-content"></div>
     </div>
 
@@ -84,12 +84,19 @@ export default {
   name: 'detail',
   data () {
     return {
-      detail: {},
-      author: '',
+      detail: {
+        title: '',
+        type: '',
+        createdAt: '',
+        userId: {
+          username: '',
+          _id: ''
+        }
+      },
       pick: '',
       comment: {
         content: '',
-        reward: ''
+        reward: 0
       },
       commentList: []
     }
@@ -107,11 +114,9 @@ export default {
     async initDetail () {
       try {
         let response = await this.$axios.get('http://localhost:7001/getreleasedetail?_id=' + this.$route.query._id)
-        this.detail = response.data.data
+        this.detail = Object.assign({}, response.data.data)
         this.detail.createdAt = moment(this.detail.createdAt).format('YYYY-MM-DD')
         this.detail.type = this.detail.type.split(',').map(item => detailType[item]).join(' ')
-        let author = await this.$axios.get('http://localhost:7001/getuserinfo?userId=' + this.detail.userId)
-        this.author = author.data.data.username
       } catch (e) {
         this.$message.error(e.data.message)
       }
@@ -123,11 +128,14 @@ export default {
           throw response
         }
         this.commentList = response.data.data.map((item) => {
-          return Object.assign({}, item, item.userId)
+          return Object.assign({}, item)
         })
         this.commentList.forEach(item => {
           item.createdAt = moment(item.createdAt).format('YYYY-MM-DD')
           item.userId.usertype = USERTYPE[item.userId.usertype]
+          if (item.reward) {
+            item.reward = item.reward.toLocaleString('zh', { style: 'currency', currency: 'CNY' })
+          }
         })
       } catch (e) {
         this.$message.error(e.data.message)
@@ -139,9 +147,7 @@ export default {
     async shotComment () {
       try {
         if (!this.pick) {
-          this.comment.reward = ''
-        } else {
-          this.comment.reward = this.comment.reward.toLocaleString('zh', { style: 'currency', currency: 'CNY' })
+          this.comment.reward = 0
         }
         const commentModel = {
           releaseId: this.$route.query._id,
@@ -159,9 +165,7 @@ export default {
       this.clearComment()
     },
     clearComment () {
-      Object.keys(this.comment).forEach(item => {
-        this.comment[item] = ''
-      })
+      this.comment = Object.assign({}, { content: '', reward: 0 })
       this.pick = ''
     }
   }

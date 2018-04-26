@@ -9,9 +9,9 @@ module.exports = app => {
     usertype: { type: Number, required: true },
     email: { type: String, required: true, unique: true },
     company: { type: String, required: true },
-    job: { type: String },
+    job: { type: String }
   }, {
-    timestamps: true,
+    timestamps: true
   })
 
 

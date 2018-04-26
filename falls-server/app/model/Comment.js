@@ -6,9 +6,9 @@ module.exports = app => {
     userId: { type: Schema.Types.ObjectId, required: true, index: true, ref: 'User' },
     releaseId: { type: Schema.Types.ObjectId, required: true, index: true, ref: 'Release' },
     content: { type: String, required: true },
-    reward: { type: String }
+    reward: { type: Number }
   }, {
-    timestamps: true,
+    timestamps: true
   })
 
   return mongoose.model('Comment', CommentSchema)
