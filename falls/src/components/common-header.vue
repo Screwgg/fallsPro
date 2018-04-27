@@ -2,14 +2,14 @@
   <div class="header">
     <div class="left">
       <img src="@/assets/logo.png" class="logo">
-      <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :router="true">
+      <el-menu :default-active="activeIndex" class="menu" mode="horizontal" @select="selectMenu">
         <el-menu-item index="/">发现</el-menu-item>
         <el-menu-item index="/magazine">周刊</el-menu-item>
         <el-menu-item index="/qa">问答</el-menu-item>
         <el-menu-item index="/collect">摄影图库</el-menu-item>
-        <el-menu-item index="/individual">私单</el-menu-item>
+        <el-menu-item index="/individual" v-if="!isNormalUser">私单</el-menu-item>
       </el-menu>
-      <img src="@/assets/plane.png" @click="showRelease" class="release">
+      <img src="@/assets/plane.png" @click="selectMenu('/release')" class="release">
     </div>
 
     <div class="right">
@@ -38,7 +38,7 @@
             <el-dropdown-item command="daily">我的发布</el-dropdown-item>
             <el-dropdown-item command="qa">我的问答</el-dropdown-item>
             <el-dropdown-item command="photo">我的照片</el-dropdown-item>
-            <el-dropdown-item command="individual">我的私单</el-dropdown-item>
+            <el-dropdown-item command="individual" v-if="!isNormalUser">我的私单</el-dropdown-item>
             <el-dropdown-item command="setting">设置</el-dropdown-item>
             <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -166,6 +166,7 @@ export default {
     return {
       searchContent: '',
       isLogin: false,
+      isNormalUser: false,
       signupDialog: false,
       signinDialog: false,
       signup: {
@@ -226,15 +227,16 @@ export default {
     }
   },
   methods: {
-    showRelease () {
-      if (!Cookie.get('token')) {
+    selectMenu (index) {
+      if (!Cookie.get('token') && !['/', '/magazine'].includes(index)) {
         this.$router.push('/blank')
       } else {
-        this.$router.push('/release')
+        this.$router.push(index)
       }
     },
     getCookie () {
       const token = Cookie.get('token')
+      this.isNormalUser = Cookie.get('usertype') === '1'
       if (token) {
         this.$axios.defaults.headers.common['X-TOKEN'] = token
       }
@@ -271,6 +273,7 @@ export default {
           throw response
         }
         Cookie.set('token', response.data.data.token, { expires: 3 })
+        Cookie.set('usertype', response.data.data.usertype, { expires: 3 })
         this.getCookie()
         this.$message.success(response.data.message)
         this.isLogin = true
@@ -315,15 +318,15 @@ export default {
               }
               this.isLogin = false
               Cookie.remove('token')
+              Cookie.remove('usertype')
               this.$axios.defaults.headers.common['X-TOKEN'] = ''
+              this.isNormalUser = true
               this.$message.success(response.data.message)
               this.$router.go(0)
-              if (this.$route.path.indexOf('/homepage') !== -1) {
+              if (!['/', '/magazine', '/detail'].includes(this.$route.path)) {
                 this.$router.push('/blank')
               }
-            }).catch((e) => {
-              this.$message.error(e.data.message)
-            })
+            }).catch(() => {})
             break
         }
       } catch (e) {

@@ -19,4 +19,8 @@ module.exports = app => {
 
   router.get('/findmagazine', controller.magazineController.findMagazine)
   router.post('/createmagazine', controller.magazineController.createMagazine)
+
+  router.post('/createoutsourcing', controller.outsourcingController.createOutsourcing)
+  router.get('/findoutsourcing', controller.outsourcingController.findOutsourcing)
+  router.get('/getoutsourcingdetail', controller.outsourcingController.getOutsourcingDetail)
 } 

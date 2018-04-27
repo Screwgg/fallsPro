@@ -25,7 +25,10 @@ module.exports = app => {
         await app.model.UserLogin.create({ userId: user._id, session: buf })
 
         return {
-          data: { token: buf },
+          data: { 
+            token: buf,
+            usertype: user.usertype
+          },
           status: 'success',
           message: '登录成功'
         }

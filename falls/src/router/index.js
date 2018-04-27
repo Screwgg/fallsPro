@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/components/index'
+
 import discover from '@/components/tab/discover'
 import release from '@/components/tab/release'
 import magazine from '@/components/tab/magazine'
@@ -8,6 +9,7 @@ import qa from '@/components/tab/qa'
 import collect from '@/components/tab/collect'
 import individual from '@/components/tab/individual'
 import blank from '@/components/tab/blank'
+
 import homepage from '@/components/homepage/homepage'
 import userinfo from '@/components/homepage/userinfo'
 import daily from '@/components/homepage/daily'
@@ -50,6 +52,11 @@ export default new Router({
         {
           path: '/detail',
           name: 'detail',
+          component: detail
+        },
+        {
+          path: '/outdetail',
+          name: 'outdetail',
           component: detail
         },
         {
