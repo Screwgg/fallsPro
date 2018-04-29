@@ -7,7 +7,8 @@ module.exports = app => {
     theme: { type: String, required: true },
     demand: { type: String, required: true },
     bonus: { type: Number, required: true },
-    deadline: { type: String, required: true }
+    deadline: { type: String, required: true },
+    status: { type: Boolean, default: false }
   }, {
     timestamps: true
   })

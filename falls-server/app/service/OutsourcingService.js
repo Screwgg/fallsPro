@@ -54,6 +54,27 @@ module.exports = app => {
         }
       }
     }
+    async checkAuthor(id, token) {
+      try {
+        const session = await app.model.UserLogin.findOne({ session: token, valid: true })
+        if (!session) {
+          throw new Error('请重新登录')
+        }
+        const outsourcing = await app.model.Outsourcing.findOne({ _id: id })
+        if (!outsourcing) {
+          throw new Error('该发布不存在或已删除')
+        }
+        let result = session.userId == outsourcing.userId
+        return {
+          data: result
+        }
+      } catch (e) {
+        return {
+          data: null,
+          message: e.message
+        }
+      }
+    }
   }
   return OutsourcingService
 }

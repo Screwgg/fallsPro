@@ -12,7 +12,10 @@
     </div>
 
     <div class="mainbody" v-else>
-      <div class="detail-title">{{outdetail.theme}}</div>
+      <div class="detail-title">{{outdetail.theme}}
+        <el-tag type="success" v-if="!outdetail.status">待接单</el-tag>
+        <el-tag type="danger" v-else>已截单</el-tag>
+      </div>
       <div class="line"></div>
       <div class="detail-info">
         <p @click="jumpUserinfo(outdetail.userId._id)" class="author">发布人：{{outdetail.userId.username}}</p>
@@ -24,7 +27,7 @@
       <p class="detail-content">需求描述：{{outdetail.demand}}</p>
     </div>
 
-    <comment v-if="isReleaseDetail"></comment>
+    <comment :isReleaseDetail="isReleaseDetail" :isFinish="outdetail.status"></comment>
   </div>
 </template>
 
@@ -71,7 +74,8 @@ export default {
           username: '',
           company: '',
           email: ''
-        }
+        },
+        status: false
       }
     }
   },
@@ -124,6 +128,8 @@ export default {
       margin: 20px 0 80px
 
       .detail-title
+        display: flex;
+        align-items: center
         font-size: 40px
         font-weight: 800
 
@@ -149,4 +155,10 @@ export default {
       .detail-content
         /deep/ img
           width: 100%
+</style>
+
+<style lang="sass">
+.detail-title
+  .el-tag
+    margin: 0 16px
 </style>

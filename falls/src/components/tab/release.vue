@@ -16,16 +16,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="封面">
-        <el-upload
-          :action="qnLocation"
-          :show-file-list="false"
-          :before-upload="beforeUpload"
-          :data="uploadData"
-          :on-success="uploadAvatar"
-          class="avatar-uploader">
-          <img v-if="release.avatar" :src="release.avatar" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+        <upload-wall type="avatar" v-on:getAvatar="getAvatar"></upload-wall>
       </el-form-item>
     </el-form>
 
@@ -60,6 +51,7 @@
 
 <script>
 import Quill from 'quill'
+import UploadWall from '@/components/homepage/upload-wall'
 
 const releaseTypeOption = [{
   value: 'UI',
@@ -127,6 +119,7 @@ const LOCATION = 'http://upload.qiniu.com/'
 
 export default {
   name: 'release',
+  components: { UploadWall },
   data () {
     return {
       release: {
@@ -210,9 +203,8 @@ export default {
     },
 
     // 封面图上传成功回调
-    uploadAvatar (e) {
-      this.fullscreenLoading = false
-      this.release.avatar = STATICDOMAIN + e.key
+    getAvatar (avatar) {
+      this.release.avatar = avatar
     },
 
     async shot () {
@@ -266,28 +258,4 @@ export default {
 
   .ql-container
     height: 400px
-
-  .avatar-uploader
-    .el-upload
-      border: 1px dashed #d9d9d9
-      border-radius: 6px
-      cursor: pointer
-      position: relative
-      overflow: hidden
-
-    .el-upload:hover
-      border-color: #409EFF
-
-    .avatar-uploader-icon
-      font-size: 28px
-      color: #8c939d
-      width: 178px
-      height: 178px
-      line-height: 178px
-      text-align: center
-
-    .avatar
-      width: 178px
-      height: 178px
-      display: block
 </style>

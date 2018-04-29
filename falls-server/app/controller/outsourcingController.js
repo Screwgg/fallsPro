@@ -13,6 +13,11 @@ class OutsourcingController extends Controller {
   async getOutsourcingDetail(ctx) {
     ctx.body = await ctx.service.outsourcingService.getDetail(ctx.query._id)
   }
+
+  async checkOutAuthor(ctx) {
+    const token = ctx.request.headers['x-token']
+    ctx.body = await ctx.service.outsourcingService.checkAuthor(ctx.query.outsourcingId, token)
+  }
 }
 
 module.exports = OutsourcingController
