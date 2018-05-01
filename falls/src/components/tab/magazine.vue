@@ -23,11 +23,11 @@
           <div class="content"
             v-for="(subitem, subindex) in item.content"
             :key="subindex"
-            @click="jumpDetail(subitem.releaseId._id)">
+            @click="jumpDetail(subitem.releaseId)">
             <div class="title">
-              <span>{{subitem.releaseId.title}}</span>
+              <span>{{subitem.recentRelease.title}}</span>
             </div>
-            <img :src="subitem.releaseId.avatar">
+            <img :src="subitem.recentRelease.avatar">
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -52,11 +52,12 @@ export default {
     async createNewMagazine () {
       try {
         let currentWeekday = moment().weekday()
-        if (currentWeekday === 4) {
+        if (currentWeekday === 2) {
           let response = await this.$axios.post('http://localhost:7001/createmagazine')
           if (response.data.status === 'error') {
             throw response
           }
+          this.$message.success('最新周刊已生成，请查收')
         }
         this.getMagazineList()
       } catch (e) {
@@ -75,7 +76,6 @@ export default {
             content: JSON.parse(item.content)
           }
         })
-        this.$message.success('最新周刊已生成，请查收')
       } catch (e) {
         this.$message.error(e.data.message)
       }

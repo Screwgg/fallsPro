@@ -22,9 +22,26 @@ module.exports = app => {
         }
       }
     }
-    async find() {
+    async findAll() {
       try {
         const outsourcing = await app.model.Outsourcing.find()
+        return {
+          data: outsourcing
+        }
+      } catch (e) {
+        return {
+          data: null,
+          message: e.message
+        }
+      }
+    }
+    async find(token) {
+      try {
+        const session = await app.model.UserLogin.findOne({ session: token, valid: true })
+        if (!session) {
+          throw new Error('请重新登录')
+        }
+        const outsourcing = await app.model.Outsourcing.find({ userId: session.userId })
         return {
           data: outsourcing
         }

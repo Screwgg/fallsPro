@@ -6,8 +6,13 @@ class OutsourcingController extends Controller {
     ctx.body = await ctx.service.outsourcingService.create(ctx.request.body, token)
   }
 
+  async findAllOutsourcing(ctx) {
+    ctx.body = await ctx.service.outsourcingService.findAll()
+  }
+
   async findOutsourcing(ctx) {
-    ctx.body = await ctx.service.outsourcingService.find()
+    const token = ctx.request.headers['x-token']
+    ctx.body = await ctx.service.outsourcingService.find(token)
   }
 
   async getOutsourcingDetail(ctx) {

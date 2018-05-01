@@ -12,16 +12,6 @@ module.exports = app => {
         }
         await app.model.Comment.create(commentModel)
 
-        // 热门榜单中记录发布的评论数和打赏金额
-        const hotlist = await app.model.Hotlist.findOne({ releaseId: params.releaseId })
-        if (hotlist) {
-          hotlist.commentCount += 1
-          hotlist.rewardSum += params.reward
-          await hotlist.save()
-        } else {
-          await app.model.Hotlist.create({ releaseId: params.releaseId, commentCount: 1, rewardSum: params.reward })
-        }
-
         return {
           status: 'success',
           message: '发布成功'

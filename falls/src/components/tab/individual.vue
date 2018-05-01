@@ -33,30 +33,17 @@
       </div>
     </el-card>
 
-    <div class="outsourcing-list">
-      <div class="head">待接私单</div>
-      <div class="line"><span></span></div>
-      <el-collapse v-model="activeName" accordion class="list">
-        <el-collapse-item
-          v-for="(item, index) in outsourcingList"
-          :title="item.theme"
-          :name="index"
-          :key="index">
-          <div class="content" @click="jumpDetail(item._id)">
-            <p>{{item.demand}}</p>
-            <div class="more"><i class="el-icon-back"></i></div>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
-    </div>
+    <collapse-list :outsourcingList="outsourcingList" :process="true"></collapse-list>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import Cookie from 'js-cookie'
+import CollapseList from '@/components/tab/collapse-list'
 export default {
   name: 'individual',
+  components: { CollapseList },
   data () {
     return {
       isEnterpriseUser: false,
@@ -66,8 +53,7 @@ export default {
         bonus: 0,
         deadline: ''
       },
-      outsourcingList: [],
-      activeName: 0
+      outsourcingList: []
     }
   },
   computed: {
@@ -94,6 +80,7 @@ export default {
         this.$message.error(e.data.message)
       }
       this.clearIndividual()
+      this.initOutsourcing()
     },
     clearIndividual () {
       Object.keys(this.individual).forEach(item => {
@@ -106,17 +93,19 @@ export default {
     },
     async initOutsourcing () {
       try {
-        let response = await this.$axios.get('http://localhost:7001/findoutsourcing')
+        this.outsourcingList = []
+        let response = await this.$axios.get('http://localhost:7001/findalloutsourcing')
         if (response.data.status === 'error') {
           throw response
         }
-        this.outsourcingList = response.data.data
+        response.data.data.forEach(item => {
+          if (!item.status) {
+            this.outsourcingList.push(item)
+          }
+        })
       } catch (e) {
         this.$message.error(e.data.message)
       }
-    },
-    jumpDetail (_id) {
-      this.$router.push('/outdetail?_id=' + _id)
     }
   }
 }
@@ -148,45 +137,6 @@ export default {
 
   .individual-tiny
     width: 16%
-
-.outsourcing-list
-    padding: 30px
-    text-align: center
-
-    .head
-      padding: 6px 0
-      font-size: 30px
-      font-weight: 800
-
-    .line
-      span
-        width: 2%
-        display: inline-block
-        border-bottom: #bb0f24 4px solid
-
-    .list
-      margin: 40px 140px
-
-      .content
-        cursor: pointer
-
-        p
-          padding: 0 30px
-          text-align: left
-          overflow: hidden
-          text-overflow: ellipsis
-          display: -webkit-box
-          -webkit-line-clamp: 3
-          -webkit-box-orient: vertical
-
-        .more
-          padding: 0 36px
-          text-align: right
-
-          i
-            transform: rotateY(180deg)
-            color: #bb0f24
-            font-weight: 600
 </style>
 
 <style lang="sass">

@@ -8,6 +8,11 @@ class FilterController extends Controller {
   async findFilter(ctx) {
     ctx.body = await ctx.service.filterService.find(ctx.query.outsourcingId)
   }
+
+  async findMyFilter(ctx) {
+    const token = ctx.request.headers['x-token']
+    ctx.body = await ctx.service.filterService.findMy(token)
+  }
 }
 
 module.exports = FilterController

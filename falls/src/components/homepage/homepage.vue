@@ -17,6 +17,7 @@
 const breadMap = {
   homepage: '我的主页',
   daily: '我的发布',
+  service: '我的私单',
   setting: '设置'
 }
 export default {

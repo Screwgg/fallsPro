@@ -21,6 +21,7 @@ module.exports = app => {
   router.post('/createmagazine', controller.magazineController.createMagazine)
 
   router.post('/createoutsourcing', controller.outsourcingController.createOutsourcing)
+  router.get('/findalloutsourcing', controller.outsourcingController.findAllOutsourcing)
   router.get('/findoutsourcing', controller.outsourcingController.findOutsourcing)
   router.get('/getoutsourcingdetail', controller.outsourcingController.getOutsourcingDetail)
   router.get('/checkoutauthor', controller.outsourcingController.checkOutAuthor)
@@ -30,4 +31,5 @@ module.exports = app => {
 
   router.post('/createfilter', controller.filterController.createFilter)
   router.get('/findfilter', controller.filterController.findFilter)
+  router.get('/findmyfilter', controller.filterController.findMyFilter)
 } 

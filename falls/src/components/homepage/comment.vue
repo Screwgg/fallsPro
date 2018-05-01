@@ -3,7 +3,7 @@
     <p class="comment-title">
       {{isReleaseDetail ? `评论（${commentList.length}）` : `投稿（${contributorList.length}）`}}
     </p>
-    <div class="comment-area" v-if="!isConAuthor">
+    <div class="comment-area" v-if="!isEnterpriseUser">
       <!-- 已登陆 -->
       <div class="send" v-if="isLogin">
         <!-- 评论 -->
@@ -61,7 +61,7 @@
               <el-button
                 type="primary"
                 :disabled="!contributor.wall.length"
-                @click="shotComment">
+                @click="shotContribute">
                 发布投稿
               </el-button>
             </div>
@@ -206,6 +206,9 @@ export default {
   computed: {
     isLogin () {
       return Cookie.get('token')
+    },
+    isEnterpriseUser () {
+      return Cookie.get('usertype') === '2'
     }
   },
   methods: {
@@ -253,24 +256,32 @@ export default {
     },
     async shotComment () {
       try {
-        let response
-        if (this.isReleaseDetail) {
-          if (!this.pick) {
-            this.comment.reward = 0
-          }
-          const commentModel = {
-            releaseId: this.$route.query._id,
-            ...this.comment
-          }
-          response = await this.$axios.post('http://localhost:7001/createcomment', commentModel)
-        } else {
-          const contributorModel = {
-            outsourcingId: this.$route.query._id,
-            wall: JSON.stringify(this.contributor.wall),
-            description: this.contributor.description
-          }
-          response = await this.$axios.post('http://localhost:7001/createcontributor', contributorModel)
+        if (!this.pick) {
+          this.comment.reward = 0
         }
+        const commentModel = {
+          releaseId: this.$route.query._id,
+          ...this.comment
+        }
+        let response = await this.$axios.post('http://localhost:7001/createcomment', commentModel)
+        if (response.data.status === 'error') {
+          throw response
+        }
+        this.$message.success(response.data.message)
+        this.initComment()
+      } catch (e) {
+        this.$message.error(e.data.message)
+      }
+      this.clearComment()
+    },
+    async shotContribute () {
+      try {
+        const contributorModel = {
+          outsourcingId: this.$route.query._id,
+          wall: JSON.stringify(this.contributor.wall),
+          description: this.contributor.description
+        }
+        let response = await this.$axios.post('http://localhost:7001/createcontributor', contributorModel)
         if (response.data.status === 'error') {
           throw response
         }

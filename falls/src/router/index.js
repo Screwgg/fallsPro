@@ -15,6 +15,7 @@ import userinfo from '@/components/homepage/userinfo'
 import daily from '@/components/homepage/daily'
 import detail from '@/components/homepage/detail'
 import setting from '@/components/homepage/setting'
+import service from '@/components/homepage/service'
 
 Vue.use(Router)
 
@@ -87,6 +88,11 @@ export default new Router({
               path: 'setting',
               name: 'setting',
               component: setting
+            },
+            {
+              path: 'service',
+              name: 'service',
+              component: service
             }
           ]
         }

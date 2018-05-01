@@ -47,7 +47,7 @@ module.exports = app => {
           }
           userId = session.userId
         }
-        const releaseList = await app.model.Release.find({userId: userId})
+        const releaseList = await app.model.Release.find({ userId: userId })
         return {
           data: releaseList,
           status: 'success',

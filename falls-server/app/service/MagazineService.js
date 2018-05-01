@@ -7,14 +7,52 @@ module.exports = app => {
         const checkTitle = await app.model.Magazine.findOne({ title: date })
         if (!checkTitle) {
           let end = moment().toISOString()
-          let start = moment().weekday(-3).toISOString()
-          const selection = await app.model.Hotlist.find({})
-            .populate('releaseId', 'title avatar createdAt', { createdAt: { $gte: start, $lt: end } })
-            .sort({ rewardSum: -1 })
-          const magazine = selection.filter(item => item.releaseId).slice(0, 5)
+          let start = moment().weekday(-6).toISOString()
+
+          const rewardSum = await app.model.Comment.aggregate([
+            { 
+              $group: { 
+                _id: '$releaseId', 
+                rewardSum: { $sum: '$reward' },
+                commentCount: { $sum: 1 } 
+              } 
+            }, { 
+              $sort: { rewardSum: -1 } 
+            }, {
+              $lookup: {
+                from: 'releases',
+                localField: '_id',
+                foreignField: '_id',
+                as: 'recentRelease'
+              }
+            }, {
+              $unwind: '$recentRelease'
+            }, {
+              $project: {
+                _id: 0,
+                releaseId: '$_id',
+                rewardSum: 1,
+                commentCount: 1,
+                recentRelease: {
+                  title: 1,
+                  avatar: 1
+                },
+                createdAt: '$recentRelease.createdAt'
+              }
+            }, {
+              $match: { 
+                createdAt: { 
+                  $gte: new Date(start),
+                  $lt: new Date(end)
+                }
+              }
+            }, {
+              $limit: 5
+            }
+          ])
           await app.model.Magazine.create({
             title: date,
-            content: JSON.stringify(magazine)
+            content: JSON.stringify(rewardSum)
           })
         }
         return {
