@@ -28,7 +28,7 @@ module.exports = app => {
         const comment = await app.model.Comment.find({ releaseId: releaseId }).populate('userId', 'username usertype').sort({ reward: -1 })
         return {
           data: comment,
-          status: 'success',
+          status: 'success'
         }
       } catch (e) {
         return {

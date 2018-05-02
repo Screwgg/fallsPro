@@ -32,4 +32,12 @@ module.exports = app => {
   router.post('/createfilter', controller.filterController.createFilter)
   router.get('/findfilter', controller.filterController.findFilter)
   router.get('/findmyfilter', controller.filterController.findMyFilter)
+
+  router.post('/createcollect', controller.collectController.createCollect) 
+  router.get('/findallcollect', controller.collectController.findAllCollect) 
+  router.get('/findcollect', controller.collectController.findCollect) 
+  router.post('/deletecollect', controller.collectController.deleteCollect)
+
+  router.post('/recordcopyright', controller.collectController.recordCopyright) 
+  router.get('/findcopyright', controller.collectController.findCopyright) 
 } 

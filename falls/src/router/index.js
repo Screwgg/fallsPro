@@ -16,6 +16,7 @@ import daily from '@/components/homepage/daily'
 import detail from '@/components/homepage/detail'
 import setting from '@/components/homepage/setting'
 import service from '@/components/homepage/service'
+import photo from '@/components/homepage/photo'
 
 Vue.use(Router)
 
@@ -29,48 +30,39 @@ export default new Router({
           path: '',
           name: 'discover',
           component: discover
-        },
-        {
+        }, {
           path: '/release',
           name: 'release',
           component: release
-        },
-        {
+        }, {
           path: '/magazine',
           name: 'magazine',
           component: magazine
-        },
-        {
+        }, {
           path: '/qa',
           name: 'qa',
           component: qa
-        },
-        {
+        }, {
           path: '/collect',
           name: 'collect',
           component: collect
-        },
-        {
+        }, {
           path: '/detail',
           name: 'detail',
           component: detail
-        },
-        {
+        }, {
           path: '/outdetail',
           name: 'outdetail',
           component: detail
-        },
-        {
+        }, {
           path: '/individual',
           name: 'individual',
           component: individual
-        },
-        {
+        }, {
           path: '/blank',
           name: 'blank',
           component: blank
-        },
-        {
+        }, {
           path: '/homepage',
           component: homepage,
           children: [
@@ -78,21 +70,22 @@ export default new Router({
               path: '',
               name: 'userinfo',
               component: userinfo
-            },
-            {
+            }, {
               path: 'daily',
               name: 'daily',
               component: daily
-            },
-            {
+            }, {
               path: 'setting',
               name: 'setting',
               component: setting
-            },
-            {
+            }, {
               path: 'service',
               name: 'service',
               component: service
+            }, {
+              path: 'photo',
+              name: 'photo',
+              component: photo
             }
           ]
         }

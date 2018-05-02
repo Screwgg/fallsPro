@@ -8,6 +8,7 @@
         :before-upload="beforeUpload"
         :data="uploadData"
         :on-success="uploadWall"
+        ref="avatar"
         class="avatar-uploader">
         <img v-if="avatar" :src="avatar" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -23,7 +24,8 @@
         :data="uploadData"
         :on-success="uploadWall"
         :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove">
+        :on-remove="handleRemove"
+        ref="avatar">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible">
@@ -84,6 +86,10 @@ export default {
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    clearAvatar () {
+      this.$refs['avatar'].clearFiles()
+      this.avatar = ''
     }
   }
 }

@@ -11,7 +11,7 @@
             <el-input v-model="individual.theme" placeholder="请输入主题" class="individual"></el-input>
           </el-form-item>
           <el-form-item label="需求详情">
-            <el-input v-model="individual.demand" placeholder="请输入需求详情" type="textarea" :rows="6" class="individual"></el-input>
+            <el-input v-model="individual.demand" placeholder="请输入需求详情" type="textarea" :rows="10" class="individual"></el-input>
           </el-form-item>
           <el-form-item label="酬金(¥)">
             <el-input-number v-model="individual.bonus" :step="1000" placeholder="请输入酬金" class="individual individual-tiny"></el-input-number>
@@ -46,7 +46,6 @@ export default {
   components: { CollapseList },
   data () {
     return {
-      isEnterpriseUser: false,
       individual: {
         theme: '',
         demand: '',
@@ -59,12 +58,12 @@ export default {
   computed: {
     individualFull () {
       return Object.keys(this.individual).every(item => this.individual[item])
+    },
+    isEnterpriseUser () {
+      return Cookie.get('usertype') === '2'
     }
   },
   mounted () {
-    if (Cookie.get('usertype') === '2') {
-      this.isEnterpriseUser = true
-    }
     this.initOutsourcing()
   },
   methods: {

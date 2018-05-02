@@ -106,6 +106,7 @@ module.exports = app => {
         if (!release) {
           throw new Error('该发布不存在或已删除')
         }
+        await app.model.Comment.deleteMany({ releaseId: _id._id })
         return {
           status: 'success',
           message: '删除发布成功'
@@ -113,7 +114,7 @@ module.exports = app => {
       } catch (e) {
         return {
           status: 'error',
-          message: e.message || '删除发布失败'
+          message: e.message
         }
       }
     }

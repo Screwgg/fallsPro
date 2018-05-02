@@ -299,6 +299,9 @@ export default {
           case 'daily':
             this.$router.push('/homepage/daily')
             break
+          case 'photo':
+            this.$router.push('/homepage/photo')
+            break
           case 'service':
             this.$router.push('/homepage/service')
             break

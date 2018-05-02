@@ -45,7 +45,8 @@
                 <upload-wall
                   type="wall"
                   v-on:getAvatar="getAvatar"
-                  v-on:removeAvatar="removeAvatar">
+                  v-on:removeAvatar="removeAvatar"
+                  ref="wall">
                 </upload-wall>
               </el-form-item>
               <el-form-item label="添加作品描述(可选)">
@@ -127,11 +128,10 @@
           确认选择
         </el-button>
         <el-dialog
-          title="确认选择"
+          title="确认选择并支付酬金"
           :visible.sync="confirmCheckDialog"
           width="30%"
           center>
-          <span>支付酬金</span>
           <img src="@/assets/QRcode.jpeg">
           <span slot="footer" class="dialog-footer">
             <el-button @click="confirmCheckDialog = false">取 消</el-button>
@@ -286,8 +286,8 @@ export default {
           throw response
         }
         this.$message.success(response.data.message)
+        this.$refs.wall.clearAvatar()
         this.initComment()
-        this.$router.go(0)
       } catch (e) {
         this.$message.error(e.data.message)
       }

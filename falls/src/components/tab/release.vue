@@ -210,10 +210,10 @@ export default {
     async shot () {
       try {
         let response = await this.$axios.post('http://localhost:7001/createrelease', this.release)
-        this.$message({
-          message: response.data.message,
-          type: response.data.status
-        })
+        if (response.data.status === 'error') {
+          throw response
+        }
+        this.$message.success(response.data.message)
       } catch (e) {
         this.$message.error(e.data.message)
       }
