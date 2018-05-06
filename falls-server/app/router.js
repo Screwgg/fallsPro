@@ -40,4 +40,15 @@ module.exports = app => {
 
   router.post('/recordcopyright', controller.collectController.recordCopyright) 
   router.get('/findcopyright', controller.collectController.findCopyright) 
+
+  router.post('/createqa', controller.qaController.createQa) 
+  router.post('/checkinvite', controller.qaController.checkInvite) 
+  router.get('/findqa', controller.qaController.findQa) 
+  router.get('/findallqa', controller.qaController.findAllQa) 
+  router.get('/getqadetail', controller.qaController.getQaDetail) 
+  router.post('/createanswer', controller.qaController.updateQa)
+
+  router.post('/payanswer', controller.qaController.payAnswer)
+  router.get('/findpay', controller.qaController.findPay)
+
 } 

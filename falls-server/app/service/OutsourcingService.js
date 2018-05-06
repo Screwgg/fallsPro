@@ -26,11 +26,12 @@ module.exports = app => {
       try {
         const outsourcing = await app.model.Outsourcing.find()
         return {
-          data: outsourcing
+          data: outsourcing,
+          status: 'success'
         }
       } catch (e) {
         return {
-          data: null,
+          status: 'error',
           message: e.message
         }
       }
@@ -43,11 +44,12 @@ module.exports = app => {
         }
         const outsourcing = await app.model.Outsourcing.find({ userId: session.userId })
         return {
-          data: outsourcing
+          data: outsourcing,
+          status: 'success'
         }
       } catch (e) {
         return {
-          data: null,
+          status: 'error',
           message: e.message
         }
       }
@@ -60,8 +62,7 @@ module.exports = app => {
         }
         return {
           data: outsourcingDetail,
-          status: 'success',
-          message: ''
+          status: 'success'
         }
       } catch (e) {
         return {
@@ -83,11 +84,12 @@ module.exports = app => {
         }
         let result = session.userId == outsourcing.userId
         return {
-          data: result
+          data: result,
+          status: 'success'
         }
       } catch (e) {
         return {
-          data: null,
+          status: 'error',
           message: e.message
         }
       }

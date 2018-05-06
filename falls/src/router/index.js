@@ -9,6 +9,7 @@ import qa from '@/components/tab/qa'
 import collect from '@/components/tab/collect'
 import individual from '@/components/tab/individual'
 import blank from '@/components/tab/blank'
+import answer from '@/components/tab/answer'
 
 import homepage from '@/components/homepage/homepage'
 import userinfo from '@/components/homepage/userinfo'
@@ -17,6 +18,7 @@ import detail from '@/components/homepage/detail'
 import setting from '@/components/homepage/setting'
 import service from '@/components/homepage/service'
 import photo from '@/components/homepage/photo'
+import faq from '@/components/homepage/faq'
 
 Vue.use(Router)
 
@@ -42,6 +44,10 @@ export default new Router({
           path: '/qa',
           name: 'qa',
           component: qa
+        }, {
+          path: '/answer',
+          name: 'answer',
+          component: answer
         }, {
           path: '/collect',
           name: 'collect',
@@ -86,6 +92,10 @@ export default new Router({
               path: 'photo',
               name: 'photo',
               component: photo
+            }, {
+              path: 'faq',
+              name: 'faq',
+              component: faq
             }
           ]
         }

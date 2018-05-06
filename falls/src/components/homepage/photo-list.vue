@@ -8,7 +8,7 @@
             <span>{{item.spot}}</span>
             <div class="bottom clearfix">
               <span class="material">{{item.material}}</span>
-              <i class="el-icon-delete button" @click="deletePhoto(item._id)" v-if="isDesigner"></i>
+              <i class="el-icon-delete button" @click="deletePhoto(item._id)" v-if="isAuthor"></i>
             </div>
           </div>
         </el-card>
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'photo-list',
-  props: ['photoList', 'isDesigner'],
+  props: ['photoList', 'isDesigner', 'isAuthor'],
   methods: {
     deletePhoto (collectId) {
       this.$emit('deletePhoto', collectId)

@@ -36,7 +36,7 @@
         </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="daily">我的发布</el-dropdown-item>
-            <el-dropdown-item command="qa">我的问答</el-dropdown-item>
+            <el-dropdown-item command="faq">我的问答</el-dropdown-item>
             <el-dropdown-item command="photo">我的照片</el-dropdown-item>
             <el-dropdown-item command="service" v-if="!isNormalUser">我的私单</el-dropdown-item>
             <el-dropdown-item command="setting">设置</el-dropdown-item>
@@ -298,6 +298,9 @@ export default {
         switch (command) {
           case 'daily':
             this.$router.push('/homepage/daily')
+            break
+          case 'faq':
+            this.$router.push('/homepage/faq')
             break
           case 'photo':
             this.$router.push('/homepage/photo')

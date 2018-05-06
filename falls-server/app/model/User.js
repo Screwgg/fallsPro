@@ -14,7 +14,6 @@ module.exports = app => {
     timestamps: true
   })
 
-
   UserSchema.pre('save', function(next) {
     if (this.isModified('password')) {
       const salt = bcrypt.genSaltSync(10)

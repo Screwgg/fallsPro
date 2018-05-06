@@ -1,5 +1,6 @@
 module.exports = app => {
   const qiniu = require('qiniu')
+  const moment = require('moment')
   class ReleaseService extends app.Service {
     async create (params, token) {
       try {
@@ -76,6 +77,18 @@ module.exports = app => {
           message: e.message
         }
       }
+    }
+    hot(Qviews, Qanswers, Qscore, Ascores, date_ask, date_active) {
+      let Qage = (moment().unix() - moment(date_ask).unix()) / 3600
+      Qage = Math.round(Qage * 10) / 10
+
+      let Qupdated = (moment().unix() - moment(date_active).unix()) / 3600
+      Qupdated = Math.round(Qupdated * 10) / 10
+
+      let dividend = (Math.log10(Qviews) * 4) + ((Qanswers * Qscore) / 5) +  Ascores
+      let divisor = Math.pow(((Qage + 1) - (Qage - Qupdated) / 2), 1.5)
+
+      return dividend / divisor
     }
     async getDetail (releaseId) {
       try {

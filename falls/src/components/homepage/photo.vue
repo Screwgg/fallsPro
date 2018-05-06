@@ -2,10 +2,10 @@
   <div class="photo">
     <el-tabs type="card">
       <el-tab-pane label="我贡献的照片" v-if="isDesigner">
-        <photo-list :photoList="photoList" :isDesigner="isDesigner" v-on:deletePhoto="deletePhoto"></photo-list>
+        <photo-list :photoList="photoList" :isDesigner="isDesigner" v-on:deletePhoto="deletePhoto" :isAuthor="true"></photo-list>
       </el-tab-pane>
       <el-tab-pane label="我购买的版权">
-        <photo-list :photoList="purchaseList" :isDesigner="isDesigner"></photo-list>
+        <photo-list :photoList="purchaseList" :isDesigner="isDesigner" :isAuthor="false"></photo-list>
       </el-tab-pane>
     </el-tabs>
   </div>

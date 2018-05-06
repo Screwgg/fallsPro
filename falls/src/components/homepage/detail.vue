@@ -14,7 +14,7 @@
     <div class="mainbody" v-else>
       <div class="detail-title">{{outdetail.theme}}
         <el-tag type="success" v-if="!outdetail.status">待接单</el-tag>
-        <el-tag type="danger" v-else>已截单</el-tag>
+        <el-tag type="warning" v-else>已截单</el-tag>
       </div>
       <div class="line"></div>
       <div class="detail-info">

@@ -71,7 +71,6 @@ module.exports = app => {
         const user = new app.model.User(params)
         await user.save()
         return {
-          data: user,
           status: 'success',
           message: '注册成功'
         }
@@ -121,7 +120,6 @@ module.exports = app => {
         await session.save()
 
         return {
-          data: session,
           status: 'success',
           message: '退出登录成功'
         }
