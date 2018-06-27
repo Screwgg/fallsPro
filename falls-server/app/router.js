@@ -6,6 +6,7 @@ module.exports = app => {
   router.post('/logoutuser', controller.userController.logoutUser) 
   router.post('/updateuser', controller.userController.updateUser) 
   router.get('/getuserinfo', controller.userController.getUserInfo)
+  router.get('/getuserpage', controller.userController.getUserPage)
 
   router.post('/createrelease', controller.releaseController.createRelease)
   router.post('/gettoken', controller.releaseController.getToken)
@@ -50,5 +51,4 @@ module.exports = app => {
 
   router.post('/payanswer', controller.qaController.payAnswer)
   router.get('/findpay', controller.qaController.findPay)
-
 } 

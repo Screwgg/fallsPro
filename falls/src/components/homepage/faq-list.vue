@@ -2,7 +2,7 @@
   <div class="faq-list">
     <el-row>
       <el-col :span="span" v-for="(item, index) in faqList" :key="index">
-        <el-card>
+        <el-card v-if="type !== 'onlook'">
           <p class="title">{{item.title}}</p>
           <p v-if="type === 'invite'">描述：{{item.des}}</p>
           <p @click="jumpUserinfo(item.invite._id)">
@@ -34,9 +34,21 @@
           <el-button
             type="text"
             size="small"
-            v-if="type === 'invite' && base === 'show'"
+            v-if="base === 'homepage'"
+            @click="watchDesc(item._id)"
             class="answer">
-            加入讨论
+            查看详情
+          </el-button>
+        </el-card>
+        <el-card v-if="type === 'onlook'">
+          <p class="title">{{item.qaId.title}}</p>
+          <el-button
+            type="text"
+            size="small"
+            v-if="base === 'homepage'"
+            @click="watchDesc(item.qaId._id)"
+            class="answer">
+            查看详情
           </el-button>
         </el-card>
       </el-col>
@@ -89,6 +101,9 @@ export default {
   methods: {
     jumpUserinfo (_id) {
       this.$router.push('/homepage?userId=' + _id)
+    },
+    watchDesc (_id) {
+      this.$router.push('/answer?_id=' + _id)
     },
     addAnswer (_id) {
       this.qaId = _id

@@ -27,6 +27,10 @@ class UserController extends Controller {
     const token = ctx.request.headers['x-token']
     ctx.body = await ctx.service.userService.getInfo(ctx.query.userId, token)
   }
+
+  async getUserPage(ctx) {
+    ctx.body = await ctx.service.userService.getPage(ctx.query.username)
+  }
 }
 
 module.exports = UserController

@@ -14,12 +14,13 @@
 
     <div class="right">
       <el-input
-        placeholder="搜索设计师、作品、周刊"
+        placeholder="搜索设计师主页"
         suffix-icon="el-icon-search"
         size="medium"
         v-model="searchContent"
         @focus="changeInSearch(true)"
         @blur="changeInSearch(false)"
+        @change="search"
         class="searchbox">
       </el-input>
 
@@ -344,6 +345,18 @@ export default {
     },
     changeInSearch (value) {
       this.$emit('changeInSearch', value)
+    },
+    async search () {
+      try {
+        let response = await this.$axios.get('http://localhost:7001/getuserpage?username=' + this.searchContent)
+        if (response.data.status === 'error') {
+          throw response
+        }
+        this.$router.push('/homepage?userId=' + response.data.data)
+        this.$router.go(0)
+      } catch (e) {
+        this.$message.error(e.data.message)
+      }
     }
   }
 }

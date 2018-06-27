@@ -157,6 +157,23 @@ module.exports = app => {
         }
       }
     }
+    async getPage (username) {
+      try {
+        const user = await app.model.User.findOne({ username: username })
+        if (!user) {
+          throw new Error('未搜索到相关用户')
+        }
+        return {
+          data: user._id,
+          status: 'success'
+        }
+      } catch (e) {
+        return {
+          status: 'error',
+          message: e.message
+        }
+      }
+    }
   }
   return UserService
 }

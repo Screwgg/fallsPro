@@ -106,6 +106,7 @@ export default {
         this.$message.error(e.data.message)
       }
       this.clearQa()
+      this.initFaq()
     },
     clearQa () {
       this.qa = Object.assign({}, {

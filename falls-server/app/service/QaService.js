@@ -57,11 +57,12 @@ module.exports = app => {
         }
         const askList = await app.model.Qa.find({ userId: session.userId }).populate('invite userId', 'username')
         const inviteList = await app.model.Qa.find({ invite: session.userId }).populate('userId invite', 'username')
+        const onlookList = await app.model.Onlook.find({ userId: session.userId }).populate('qaId', 'title des')
         return {
           data: {
             askList: askList,
             inviteList: inviteList,
-            onlookList: []
+            onlookList: onlookList
           },
           status: 'success'
         }
